@@ -1,0 +1,134 @@
+################## Command to launch ##################
+
+# snakemake --config projectFile="project_ASP14.json" -rp -j40 --use-conda --conda-frontend conda -s snakefile_ASP14
+
+################## Importations ##################
+
+import os
+import sys
+import errno
+import json
+
+################## Functions ##################
+
+def getFastqFile(wildcards):
+	for s in config["samples"]:
+		if (s["sample"]==wildcards.sampleName):
+			return s["files"]["file"]
+			
+
+configfile: config["projectFile"]
+
+PROJECTNAME = config["projectName"]
+REFERENCE = "/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/genomes/hg38/hg38.analysisSet.fa"
+ANNOTATION = "/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/genomes/hg38/hg38_refseq_with_symbols_and_transcripts.gtf"
+OUTPUTDIR = "/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/ASP14_outs"
+SCRIPTPATH = "/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/scripts"
+ANNOVARPATH = "/LAB-DATA/BiRD/users/postec-a-1/annovar"
+BWA_INDEX = "/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/genomes/genome_index/BWA/BWA_index_hg38/hg38.analysisSet.fa"
+
+
+sample_all = list()
+for s in config["samples"]:
+	sample_all.append(s["sample"])
+
+################## Rules ##################
+
+rule all:
+	input:
+		OUTPUTDIR + "/multiqc_report.html",
+		expand(OUTPUTDIR + "/Samples/{sampleName}/macs2/{sampleName}_peaks.narrowPeak", sampleName=sample_all),
+		expand(OUTPUTDIR + "/Samples/{sampleName}/{sampleName}_KCNA2_coverage.tsv", sampleName=sample_all),
+		expand(OUTPUTDIR + "/Samples/{sampleName}/deepTools/{sampleName}_aligned.bw", sampleName=sample_all)
+
+
+# To filtrate reads with quality + trim adaptaters
+rule run_fastp:
+	input: 
+		reads = getFastqFile
+	output: 
+		reads = temp(OUTPUTDIR + "/Samples/{sampleName}/FASTP/{sampleName}.fastq.gz"),
+		html = OUTPUTDIR + "/Samples/{sampleName}/FASTP/{sampleName}.html",
+		json = OUTPUTDIR + "/Samples/{sampleName}/FASTP/{sampleName}.json"
+	threads:5
+	run:
+		temp_output = OUTPUTDIR + "/Samples/" + wildcards.sampleName + "/FASTP/" + wildcards.sampleName + "_fixed.fastq.gz"
+		shell("""
+		zcat {input.reads} | paste - - - - | awk 'BEGIN {{FS="\t"}} (length($2) == length($4)) {{print $0}}'| tr "\t" "\n" | gzip > {temp_output}
+		fastp -i {temp_output} -o {output.reads} --detect_adapter_for_pe -q 30  -j {output.json} --html {output.html} --thread {threads}
+		rm {temp_output}
+		""")
+
+
+rule run_bwa:
+	input:
+		R1 = OUTPUTDIR + "/Samples/{sampleName}/FASTP/{sampleName}.fastq.gz"
+	output:
+		bam = OUTPUTDIR + "/Samples/{sampleName}/BWA/{sampleName}_aligned.bam",
+		log = OUTPUTDIR + "/Samples/{sampleName}/BWA/{sampleName}_stats.txt"
+	threads:
+		10
+	shell:
+		"""
+		bwa mem -t {threads} -v 1 {BWA_INDEX} {input.R1} > {wildcards.sampleName}_temp.sam
+		samtools sort -O bam -@ {threads} {wildcards.sampleName}_temp.sam > {output.bam}
+		rm {wildcards.sampleName}_temp.sam
+		samtools index -@ {threads} {output.bam}
+		samtools flagstats -@ {threads} {output.bam} > {output.log}
+		"""
+
+rule macs2:
+	input:
+		cond = OUTPUTDIR + "/Samples/{sampleName}/BWA/{sampleName}_aligned.bam",
+		control = OUTPUTDIR + "/Samples/ASP14_d0_input/BWA/ASP14_d0_input_aligned.bam"
+	output:
+		OUTPUTDIR + "/Samples/{sampleName}/macs2/{sampleName}_peaks.narrowPeak"
+	shell:
+		"""
+		macs2 callpeak -t {input.cond} -c {input.control} -f BAM -g hs -n {OUTPUTDIR}/Samples/{wildcards.sampleName}/macs2/{wildcards.sampleName}
+		"""
+
+rule convert_to_bedgraphs:
+	input:
+		cond = OUTPUTDIR + "/Samples/{sampleName}/BWA/{sampleName}_aligned.bam",
+		control = OUTPUTDIR + "/Samples/ASP14_d0_input/BWA/ASP14_d0_input_aligned.bam"
+	output:
+		OUTPUTDIR + "/Samples/{sampleName}/bedgraphs/{sampleName}_RPKM.bedGraph"
+	shell:
+		"""
+		bamCompare -b1 {input.cond} -b2 {input.control} -of bedgraph -o {output} -bs 25 --effectiveGenomeSize 2913022398 --normalizeUsing RPKM --scaleFactorsMethod None
+		"""
+
+rule multiqc:
+	input:
+		expand(OUTPUTDIR + "/Samples/{sampleName}/macs2/{sampleName}_peaks.narrowPeak", sampleName=sample_all)
+	output:
+		OUTPUTDIR + "/multiqc_report.html"
+	shell:
+		"""
+		multiqc -f ./ASP14_outs -o ./ASP14_outs
+		"""
+
+rule KCNA2_coverage:
+	input:
+		OUTPUTDIR + "/Samples/{sampleName}/BWA/{sampleName}_aligned.bam"
+	output:
+		OUTPUTDIR + "/Samples/{sampleName}/{sampleName}_KCNA2_coverage.tsv"
+	shell:
+		"""
+		python {OUTPUTDIR}/../get_coverage_data.py -c chr1:110583000-110641000 -b {input} -o {output}
+		"""
+
+rule convert_to_bigwig:
+	input:
+		OUTPUTDIR + "/Samples/{sampleName}/BWA/{sampleName}_aligned.bam"
+	output:
+		OUTPUTDIR + "/Samples/{sampleName}/deepTools/{sampleName}_aligned.bw"
+	shell:
+		"""
+		bamCoverage --bam {input} \
+		-o {output} \
+		--binSize 20 \
+		--normalizeUsing RPGC \
+		--effectiveGenomeSize 2913022398
+		"""

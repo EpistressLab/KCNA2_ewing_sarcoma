@@ -1,0 +1,186 @@
+################## Command to launch ##################
+
+# snakemake --config projectFile="project.json" -rp -j40 --use-conda --conda-frontend conda
+
+################## Importations ##################
+
+import os
+import sys
+import errno
+import json
+
+################## Functions ##################
+
+def getFastqFile(wildcards):
+	for s in config["samples"]:
+		if (s["sample"]==wildcards.sampleName):
+			if s["end"]=="paired":
+				if (wildcards.condition=='transcription_factor'):
+					return [s["files"]["transcription_factor_file"]["forward"], s["files"]["transcription_factor_file"]["reverse"]]
+				if (wildcards.condition=='H3K4me3'):
+					return [s["files"]["H3K4me3_file"]["forward"], s["files"]["H3K4me3_file"]["reverse"]]
+				if (wildcards.condition=='H3K27ac'):
+					return [s["files"]["H3K27ac_file"]["forward"], s["files"]["H3K27ac_file"]["reverse"]]
+				if (wildcards.condition=='H3K27me3'):
+					return [s["files"]["H3K27me3_file"]["forward"], s["files"]["H3K27me3_file"]["reverse"]]
+				if (wildcards.condition=='input'):
+					return [s["files"]["input_file"]["forward"], s["files"]["input_file"]["reverse"]]
+			else:
+				if (wildcards.condition=='transcription_factor'):
+					return s["files"]["transcription_factor_file"]
+				if (wildcards.condition=='H3K4me3'):
+					return s["files"]["H3K4me3_file"]
+				if (wildcards.condition=='H3K27ac'):
+					return s["files"]["H3K27ac_file"]
+				if (wildcards.condition=='H3K27me3'):
+					return s["files"]["H3K27me3_file"]
+				if (wildcards.condition=='input'):
+					return s["files"]["input_file"]
+				
+
+configfile: config["projectFile"]
+
+PROJECTNAME = config["projectName"]
+REFERENCE = "/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/genomes/hg38/hg38.analysisSet.fa"
+ANNOTATION = "/LAB-DATA/BiRD/shares/Phy_OS/bone_epigenetics/anais/genomes/hg38/hg38_refseq_with_symbols_and_transcripts.gtf"
+OUTPUTDIR = "/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing"
+SCRIPTPATH = "/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/scripts"
+ANNOVARPATH = "/LAB-DATA/BiRD/users/postec-a-1/annovar"
+BWA_INDEX = "/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/genomes/genome_index/BWA/BWA_index_hg38/hg38.analysisSet.fa"
+
+
+sample_all = list()
+endType_all = dict()
+for s in config["samples"]:
+	sample_all.append(s["sample"])
+	endType_all[s["sample"]] = s["end"]
+
+
+conditions = ['transcription_factor','H3K4me3','H3K27ac','H3K27me3','input']
+
+################## Rules ##################
+
+rule all:
+	input:
+		OUTPUTDIR + "/multiqc_report.html",
+		expand(OUTPUTDIR + "/Samples/{sampleName}/macs2/{sampleName}_{condition}_peaks.narrowPeak", sampleName=sample_all, condition=conditions),
+		expand(OUTPUTDIR + "/Samples/{sampleName}/{sampleName}_{condition}_KCNA2_coverage.tsv", sampleName=sample_all, condition=conditions),
+		expand(OUTPUTDIR + "/Samples/{sampleName}/deepTools/{sampleName}_{condition}_aligned.bw", sampleName=sample_all, condition=conditions)
+
+
+# To filtrate reads with quality + trim adaptaters
+rule run_fastp:
+	input: 
+		reads = getFastqFile
+	output: 
+		reads = temp(OUTPUTDIR + "/Samples/{sampleName}/FASTP/{sampleName}_{condition}_R1.fastq.gz"),
+		html = OUTPUTDIR + "/Samples/{sampleName}/FASTP/{sampleName}_{condition}.html",
+		json = OUTPUTDIR + "/Samples/{sampleName}/FASTP/{sampleName}_{condition}.json"
+	threads:5
+	run:
+		if endType_all[wildcards.sampleName] == "paired":
+			input.R1 = input.reads[0]
+			input.R2 = input.reads[1]
+			output.R2 = OUTPUTDIR + "/Samples/" + wildcards.sampleName + "/FASTP/" + wildcards.sampleName + "_" + wildcards.condition + "_R2.fastq.gz"
+			temp_output_R1 = OUTPUTDIR + "/Samples/" + wildcards.sampleName + "/FASTP/" + wildcards.sampleName + "_" + wildcards.condition + "_R1_fixed.fastq"
+			temp_output_R2 = OUTPUTDIR + "/Samples/" + wildcards.sampleName + "/FASTP/" + wildcards.sampleName + "_" + wildcards.condition + "_R2_fixed.fastq"
+			temp_lines_del = OUTPUTDIR + "/Samples/" + wildcards.sampleName + "/FASTP/" + wildcards.sampleName + "_" + wildcards.condition + "_lines_to_del.txt"
+			temp_lines_del_v2 = OUTPUTDIR + "/Samples/" + wildcards.sampleName + "/FASTP/" + wildcards.sampleName + "_" + wildcards.condition + "_lines_to_del_v2.txt"
+			shell("""
+			zcat {input.R1} | paste - - - - > {temp_output_R1}
+			zcat {input.R2} | paste - - - - > {temp_output_R2}
+			awk 'BEGIN {{FS="\t"}} (length($2) != length($4)) {{print NR}}' {temp_output_R1} > {temp_lines_del}
+			awk 'BEGIN {{FS="\t"}} (length($2) != length($4)) {{print NR}}' {temp_output_R2} >> {temp_lines_del}
+			sort {temp_lines_del} | uniq > {temp_lines_del_v2}
+			rm {temp_lines_del}
+			awk '!firstfile_proceed {{ nums[$0]; next }} !(FNR in nums) {{print $0}}' {temp_lines_del_v2} firstfile_proceed=1 {temp_output_R1} | tr "\t" "\n" > {temp_output_R1}.filtered
+			awk '!firstfile_proceed {{ nums[$0]; next }} !(FNR in nums) {{print $0}}' {temp_lines_del_v2} firstfile_proceed=1 {temp_output_R2} | tr "\t" "\n" > {temp_output_R2}.filtered
+			rm {temp_lines_del_v2}
+			mv {temp_output_R1}.filtered {temp_output_R1}
+			mv {temp_output_R2}.filtered {temp_output_R2}
+			gzip {temp_output_R1}
+			gzip {temp_output_R2}
+			fastp -i {temp_output_R1}.gz -o {output.reads} -I {temp_output_R2}.gz -O {output.R2} --detect_adapter_for_pe -q 30 -j {output.json} --html {output.html} --thread {threads}
+			rm {temp_output_R1}.gz
+			rm {temp_output_R2}.gz
+			""")
+		else:
+			temp_output_R1 = OUTPUTDIR + "/Samples/" + wildcards.sampleName + "/FASTP/" + wildcards.sampleName + "_" + wildcards.condition + "_R1_fixed.fastq.gz"
+			shell("""
+			zcat {input.reads} | paste - - - - | awk 'BEGIN {{FS="\t"}} (length($2) == length($4)) {{print $0}}'| tr "\t" "\n" | gzip > {temp_output_R1}
+			fastp -i {temp_output_R1} -o {output.reads} --detect_adapter_for_pe -q 30 -j {output.json} --html {output.html} --thread {threads}
+			rm {temp_output_R1}
+			""")
+
+rule run_bwa:
+	input:
+		R1 = OUTPUTDIR + "/Samples/{sampleName}/FASTP/{sampleName}_{condition}_R1.fastq.gz"
+	output:
+		bam = OUTPUTDIR + "/Samples/{sampleName}/BWA/{sampleName}_{condition}_aligned.bam",
+		log = OUTPUTDIR + "/Samples/{sampleName}/BWA/{sampleName}_{condition}_stats.txt"
+	threads:
+		10
+	run:
+		if endType_all[wildcards.sampleName] == "paired":
+			input.R2 = OUTPUTDIR + "/Samples/" + wildcards.sampleName + "/FASTP/" + wildcards.sampleName + "_" + wildcards.condition + "_R2.fastq.gz"
+			shell("""
+			bwa mem -t {threads} -v 1 {BWA_INDEX} {input.R1} {input.R2} > {wildcards.sampleName}_{wildcards.condition}_temp.sam
+			samtools sort -O bam -@ {threads} {wildcards.sampleName}_{wildcards.condition}_temp.sam > {output.bam}
+			rm {wildcards.sampleName}_{wildcards.condition}_temp.sam
+			samtools index -@ {threads} {output.bam}
+			samtools flagstats -@ {threads} {output.bam} > {output.log}
+			rm {input.R2}
+			""")
+		else:
+			shell("""
+			bwa mem -t {threads} -v 1 {BWA_INDEX} {input.R1} > {wildcards.sampleName}_{wildcards.condition}_temp.sam
+			samtools sort -O bam -@ {threads} {wildcards.sampleName}_{wildcards.condition}_temp.sam > {output.bam}
+			rm {wildcards.sampleName}_{wildcards.condition}_temp.sam
+			samtools index -@ {threads} {output.bam}
+			samtools flagstats -@ {threads} {output.bam} > {output.log}
+			""")
+
+rule macs2:
+	input:
+		cond = OUTPUTDIR + "/Samples/{sampleName}/BWA/{sampleName}_{condition}_aligned.bam",
+		control = OUTPUTDIR + "/Samples/{sampleName}/BWA/{sampleName}_input_aligned.bam"
+	output:
+		OUTPUTDIR + "/Samples/{sampleName}/macs2/{sampleName}_{condition}_peaks.narrowPeak"
+	shell:
+		"""
+		macs2 callpeak -t {input.cond} -c {input.control} -f BAM -g hs -n {OUTPUTDIR}/Samples/{wildcards.sampleName}/macs2/{wildcards.sampleName}_{wildcards.condition}
+		"""
+
+rule multiqc:
+	input:
+		expand(OUTPUTDIR + "/Samples/{sampleName}/macs2/{sampleName}_{condition}_peaks.narrowPeak", sampleName=sample_all, condition=conditions)
+	output:
+		OUTPUTDIR + "/multiqc_report.html"
+	shell:
+		"""
+		multiqc -f .
+		"""
+
+rule KCNA2_coverage:
+	input:
+		OUTPUTDIR + "/Samples/{sampleName}/BWA/{sampleName}_{condition}_aligned.bam"
+	output:
+		OUTPUTDIR + "/Samples/{sampleName}/{sampleName}_{condition}_KCNA2_coverage.tsv"
+	shell:
+		"""
+		python {OUTPUTDIR}/get_coverage_data.py -c chr1:110583000-154880000 -b {input} -o {output}
+		"""
+
+rule convert_to_bigwig:
+    input:
+        OUTPUTDIR + "/Samples/{sampleName}/BWA/{sampleName}_{condition}_aligned.bam"
+    output:
+        OUTPUTDIR + "/Samples/{sampleName}/deepTools/{sampleName}_{condition}_aligned.bw"
+    shell:
+        """
+        bamCoverage --bam {input} \
+        -o {output} \
+        --binSize 20 \
+        --normalizeUsing RPGC \
+        --effectiveGenomeSize 2913022398
+        """

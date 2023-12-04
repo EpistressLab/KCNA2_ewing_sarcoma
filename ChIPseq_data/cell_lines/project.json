@@ -1,0 +1,233 @@
+{
+    "projectName":"ChIPseq_ewing",
+    "outputDir":".",
+    "reference":"GRCh38",
+    "samples": [
+        {
+            "sample": "A673",
+            "end": "single",
+            "files":
+            {
+                "transcription_factor_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/A673_FLI1_ChIPSeq.fastq.gz",
+                "H3K4me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/A673_H3K4me3_ChIPSeq.fastq.gz",
+                "H3K27ac_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/A673_H3K27ac_ChIPSeq.fastq.gz",
+                "H3K27me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/A673_H3K27me3_ChIPSeq.fastq.gz",
+                "input_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/A673_input_DNA.fastq.gz"
+            }
+        },
+        {
+            "sample": "CHLA10",
+            "end": "single",
+            "files":
+            {
+                "transcription_factor_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/CHLA10_FLI1_ChIPSeq.fastq.gz",
+                "H3K4me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/CHLA10_H3K4me3_ChIPSeq.fastq.gz",
+                "H3K27ac_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/CHLA10_H3K27ac_ChIPSeq.fastq.gz",
+                "H3K27me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/CHLA10_H3K27me3_ChIPSeq.fastq.gz",
+                "input_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/CHLA10_input_DNA.fastq.gz"
+            }
+        },
+        {
+            "sample": "CHLA25",
+            "end": "single",
+            "files":
+            {
+                "transcription_factor_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/CHLA25_ERG_ChIPSeq.fastq.gz",
+                "H3K4me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/CHLA25_H3K4me3_ChIPSeq.fastq.gz",
+                "H3K27ac_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/CHLA25_H3K27ac_ChIPSeq.fastq.gz",
+                "H3K27me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/CHLA25_H3K27me3_ChIPSeq.fastq.gz",
+                "input_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/CHLA25_input_DNA.fastq.gz"
+            }
+        },
+        {
+            "sample": "EW1",
+            "end": "single",
+            "files":
+            {
+                "transcription_factor_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW1_FLI1_ChIPSeq.fastq.gz",
+                "H3K4me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW1_H3K4me3_ChIPSeq.fastq.gz",
+                "H3K27ac_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW1_H3K27ac_ChIPSeq.fastq.gz",
+                "H3K27me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW1_H3K27me3_ChIPSeq.fastq.gz",
+                "input_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW1_input_DNA.fastq.gz"
+            }
+        },
+        {
+            "sample": "EW3",
+            "end": "single",
+            "files":
+            {
+                "transcription_factor_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW3_ERG_ChIPSeq.fastq.gz",
+                "H3K4me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW3_H3K4me3_ChIPSeq.fastq.gz",
+                "H3K27ac_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW3_H3K27ac_ChIPSeq.fastq.gz",
+                "H3K27me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW3_H3K27me3_ChIPSeq.fastq.gz",
+                "input_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW3_input_DNA.fastq.gz"
+            }
+        },
+        {
+            "sample": "EW7",
+            "end": "single",
+            "files":
+            {
+                "transcription_factor_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW7_FLI1_ChIPSeq.fastq.gz",
+                "H3K4me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW7_H3K4me3_ChIPSeq.fastq.gz",
+                "H3K27ac_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW7_H3K27ac_ChIPSeq.fastq.gz",
+                "H3K27me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW7_H3K27me3_ChIPSeq.fastq.gz",
+                "input_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW7_input_DNA.fastq.gz"
+            }
+        },
+        {
+            "sample": "EW22",
+            "end": "single",
+            "files":
+            {
+                "transcription_factor_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW22_FLI1_ChIPSeq.fastq.gz",
+                "H3K4me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW22_H3K4me3_ChIPSeq.fastq.gz",
+                "H3K27ac_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW22_H3K27ac_ChIPSeq.fastq.gz",
+                "H3K27me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW22_H3K27me3_ChIPSeq.fastq.gz",
+                "input_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW22_input_DNA.fastq.gz"
+            }
+        },
+        {
+            "sample": "EW24",
+            "end": "paired",
+            "files":
+            {
+                "transcription_factor_file": {
+                    "forward":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW24_FLI1_ChIPSeq_R1.fastq.gz",
+                    "reverse":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW24_FLI1_ChIPSeq_R2.fastq.gz"},
+                "H3K4me3_file": {
+                    "forward":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW24_H3K4me3_ChIPSeq_R1.fastq.gz",
+                    "reverse":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW24_H3K4me3_ChIPSeq_R2.fastq.gz"},
+                "H3K27ac_file":{
+                    "forward":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW24_H3K27ac_ChIPSeq_R1.fastq.gz",
+                    "reverse":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW24_H3K27ac_ChIPSeq_R2.fastq.gz"},
+                "H3K27me3_file":{
+                    "forward":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW24_H3K27me3_ChIPSeq_R1.fastq.gz",
+                    "reverse":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW24_H3K27me3_ChIPSeq_R2.fastq.gz"},
+                "input_file":{
+                    "forward":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW24_input_DNA_R1.fastq.gz",
+                    "reverse":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/EW24_input_DNA_R2.fastq.gz"}
+            }
+        },
+        {
+            "sample": "MHHES1",
+            "end": "single",
+            "files":
+            {
+                "transcription_factor_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/MHHES1_FLI1_ChIPSeq.fastq.gz",
+                "H3K4me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/MHHES1_H3K4me3_ChIPSeq.fastq.gz",
+                "H3K27ac_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/MHHES1_H3K27ac_ChIPSeq.fastq.gz",
+                "H3K27me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/MHHES1_H3K27me3_ChIPSeq.fastq.gz",
+                "input_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/MHHES1_input_DNA.fastq.gz"
+            }
+        },
+        {
+            "sample": "MIC",
+            "end": "single",
+            "files":
+            {
+                "transcription_factor_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/MIC_FLI1_ChIPSeq.fastq.gz",
+                "H3K4me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/MIC_H3K4me3_ChIPSeq.fastq.gz",
+                "H3K27ac_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/MIC_H3K27ac_ChIPSeq.fastq.gz",
+                "H3K27me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/MIC_H3K27me3_ChIPSeq.fastq.gz",
+                "input_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/MIC_input_DNA.fastq.gz"
+            }
+        },
+        {
+            "sample": "POE",
+            "end": "single",
+            "files":
+            {
+                "transcription_factor_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/POE_FLI1_ChIPSeq.fastq.gz",
+                "H3K4me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/POE_H3K4me3_ChIPSeq.fastq.gz",
+                "H3K27ac_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/POE_H3K27ac_ChIPSeq.fastq.gz",
+                "H3K27me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/POE_H3K27me3_ChIPSeq.fastq.gz",
+                "input_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/POE_input_DNA.fastq.gz"
+            }
+        },
+        {
+            "sample": "RDES",
+            "end": "single",
+            "files":
+            {
+                "transcription_factor_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/RDES_FLI1_ChIPSeq.fastq.gz",
+                "H3K4me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/RDES_H3K4me3_ChIPSeq.fastq.gz",
+                "H3K27ac_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/RDES_H3K27ac_ChIPSeq.fastq.gz",
+                "H3K27me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/RDES_H3K27me3_ChIPSeq.fastq.gz",
+                "input_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/RDES_input_DNA.fastq.gz"
+            }
+        },
+        {
+            "sample": "RH1",
+            "end": "single",
+            "files":
+            {
+                "transcription_factor_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/RH1_FLI1_ChIPSeq.fastq.gz",
+                "H3K4me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/RH1_H3K4me3_ChIPSeq.fastq.gz",
+                "H3K27ac_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/RH1_H3K27ac_ChIPSeq.fastq.gz",
+                "H3K27me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/RH1_H3K27me3_ChIPSeq.fastq.gz",
+                "input_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/RH1_input_DNA.fastq.gz"
+            }
+        },
+        {
+            "sample": "SKES1",
+            "end": "single",
+            "files":
+            {
+                "transcription_factor_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/SKES1_FLI1_ChIPSeq.fastq.gz",
+                "H3K4me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/SKES1_H3K4me3_ChIPSeq.fastq.gz",
+                "H3K27ac_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/SKES1_H3K27ac_ChIPSeq.fastq.gz",
+                "H3K27me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/SKES1_H3K27me3_ChIPSeq.fastq.gz",
+                "input_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/SKES1_input_DNA.fastq.gz"
+            }
+        },
+        {
+            "sample": "SKNMC",
+            "end": "single",
+            "files":
+            {
+                "transcription_factor_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/SKNMC_FLI1_ChIPSeq.fastq.gz",
+                "H3K4me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/SKNMC_H3K4me3_ChIPSeq.fastq.gz",
+                "H3K27ac_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/SKNMC_H3K27ac_ChIPSeq.fastq.gz",
+                "H3K27me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/SKNMC_H3K27me3_ChIPSeq.fastq.gz",
+                "input_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/SKNMC_input_DNA.fastq.gz"
+            }
+        },
+        {
+            "sample": "TC32",
+            "end": "single",
+            "files":
+            {
+                "transcription_factor_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/TC32_FLI1_ChIPSeq.fastq.gz",
+                "H3K4me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/TC32_H3K4me3_ChIPSeq.fastq.gz",
+                "H3K27ac_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/TC32_H3K27ac_ChIPSeq.fastq.gz",
+                "H3K27me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/TC32_H3K27me3_ChIPSeq.fastq.gz",
+                "input_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/TC32_input_DNA.fastq.gz"
+            }
+        },
+        {
+            "sample": "TC71",
+            "end": "single",
+            "files":
+            {
+                "transcription_factor_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/TC71_FLI1_ChIPSeq.fastq.gz",
+                "H3K4me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/TC71_H3K4me3_ChIPSeq.fastq.gz",
+                "H3K27ac_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/TC71_H3K27ac_ChIPSeq.fastq.gz",
+                "H3K27me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/TC71_H3K27me3_ChIPSeq.fastq.gz",
+                "input_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/TC71_input_DNA.fastq.gz"
+            }
+        },
+        {
+            "sample": "TC106",
+            "end": "single",
+            "files":
+            {
+                "transcription_factor_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/TC106_ERG_ChIPSeq.fastq.gz",
+                "H3K4me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/TC106_H3K4me3_ChIPSeq.fastq.gz",
+                "H3K27ac_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/TC106_H3K27ac_ChIPSeq.fastq.gz",
+                "H3K27me3_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/TC106_H3K27me3_ChIPSeq.fastq.gz",
+                "input_file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE176400/TC106_input_DNA.fastq.gz"
+            }
+        }
+    ]
+}

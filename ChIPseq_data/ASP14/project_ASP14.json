@@ -1,0 +1,79 @@
+{
+    "projectName":"ChIPseq_ewing_ASP14",
+    "outputDir":".",
+    "reference":"GRCh38",
+    "samples": [
+        {
+            "sample": "ASP14_d0_input",
+            "end": "single",
+            "files":
+            {
+                "file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE129155/ASP14_d0_input.fastq.gz"
+            }
+        },
+        {
+            "sample": "ASP14_d0_H3K27ac",
+            "end": "single",
+            "files":
+            {
+                "file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE129155/ASP14_d0_H3K27ac.fastq.gz"
+            }
+        },
+        {
+            "sample": "ASP14_d7_H3K27ac",
+            "end": "single",
+            "files":
+            {
+                "file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE129155/ASP14_d7_H3K27ac.fastq.gz"
+            }
+        },
+        {
+            "sample": "ASP14_d7_FLI1",
+            "end": "single",
+            "files":
+            {
+                "file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE129155/ASP14_d7_FLI1.fastq.gz"
+            }
+        },
+        {
+            "sample": "ASP14_d9_FLI1",
+            "end": "single",
+            "files":
+            {
+                "file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE129155/ASP14_d9_FLI1.fastq.gz"
+            }
+        },
+        {
+            "sample": "ASP14_d10_FLI1",
+            "end": "single",
+            "files":
+            {
+                "file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE129155/ASP14_d10_FLI1.fastq.gz"
+            }
+        },
+        {
+            "sample": "ASP14_d11_FLI1",
+            "end": "single",
+            "files":
+            {
+                "file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE129155/ASP14_d11_FLI1.fastq.gz"
+            }
+        },
+        {
+            "sample": "ASP14_d14_FLI1",
+            "end": "single",
+            "files":
+            {
+                "file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE129155/ASP14_d14_FLI1.fastq.gz"
+            }
+        },
+        {
+            "sample": "ASP14_d17_FLI1",
+            "end": "single",
+            "files":
+            {
+                "file":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/GSE129155/ASP14_d17_FLI1.fastq.gz"
+            }
+        }
+    ]
+}
