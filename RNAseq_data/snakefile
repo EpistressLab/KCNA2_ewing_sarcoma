@@ -1,0 +1,132 @@
+################## Command to launch ##################
+
+# snakemake --config projf="project.json" conff="config.json" -rp -j45 --use-conda
+
+################## Importations ##################
+
+import os
+import sys
+import errno
+import json
+
+################## Functions ##################
+
+def getConditions():
+	sampleList = list()
+	for cond in config["replicates"].keys():
+		for s in config["replicates"][cond]["samples"]:
+			sd = dict()
+			sd["samplename"] = s
+			sd["filename"] = s
+			sd["condition"] = cond
+			sampleList.append(sd)
+	return sampleList
+
+def getFastqFileFW(wildcards):
+	for s in config["samples"]:
+		if (s["sample"]== wildcards.sampleName):
+			return s["files"]["forward"]
+
+def getFastqFileRV(wildcards):
+	for s in config["samples"]:
+		if (s["sample"]== wildcards.sampleName):
+			return s["files"]["reverse"]
+
+
+
+################## Configurations variables ##################
+
+configfile: config["projf"]
+configfile: config["conff"]
+
+LOGFCTHRESHOLD = 1
+FDRTHRESHOLD = 0.05
+
+REFERENCE = "/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/genomes/hg38/hg38.analysisSet.fa"
+ANNOTATION = "/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/genomes/hg38/hg38_refseq_with_symbols.gtf"
+OUTPUTDIR = "/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/RNAseq_ewing"
+SCRIPTPATH = "/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/scripts"
+ANNOVARPATH = "/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/annovar"
+
+sample_all = list()
+for s in config["samples"]:
+	sample_all.append(s["sample"])
+
+################## Rules ##################
+
+rule all:
+	input:
+		OUTPUTDIR + "/deseq2_kallisto/kallisto_conditions.tab",
+		expand(OUTPUTDIR + "/Samples/{sampleName}/kallisto", sampleName=sample_all)
+
+
+
+rule filter_fastp:
+	input: 
+		R1 = getFastqFileFW,
+		R2 = getFastqFileRV
+	output: 
+		R1 = temp(OUTPUTDIR + "/Samples/{sampleName}/FASTP/{sampleName}_R1.fastq.gz"),
+		R2 = temp(OUTPUTDIR + "/Samples/{sampleName}/FASTP/{sampleName}_R2.fastq.gz"),
+		report = OUTPUTDIR + "/Samples/{sampleName}/FASTP/{sampleName}_report.txt",
+		html = OUTPUTDIR + "/Samples/{sampleName}/FASTP/{sampleName}.html"
+	threads: 
+		6
+	shell:
+		"""
+		fastp -i {input.R1} -o {output.R1} -I {input.R2} -O {output.R2} --detect_adapter_for_pe -q 30 --html {output.html} \
+		--thread {threads} > {output.report}
+	   	"""
+
+rule kallisto:
+	input:
+		index = "/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/genomes/genome_index/kallisto/human_refseq_GCF_000001405.40/transcriptome.idx",
+		R1 = OUTPUTDIR + "/Samples/{sampleName}/FASTP/{sampleName}_R1.fastq.gz",
+		R2 = OUTPUTDIR + "/Samples/{sampleName}/FASTP/{sampleName}_R2.fastq.gz"
+	output:
+		directory(OUTPUTDIR + "/Samples/{sampleName}/kallisto")
+	shell:
+		"""
+		kallisto quant \
+		-i {input.index} \
+		-o {output} \
+		-b 100 \
+		<(zcat {input.R1}) \
+		<(zcat {input.R2})
+		"""
+
+rule kallisto_conditions:
+	input:
+		expand(OUTPUTDIR + "/Samples/{sampleName}/kallisto", sampleName=sample_all)
+	output: 
+		tab = OUTPUTDIR + "/deseq2_kallisto/kallisto_conditions.tab"
+	run:
+		condArray = getConditions()
+		with open(output.tab, 'w') as condfile:
+			condfile.write("samplename" + "\t" + "filename" + "\t" + "condition" + "\n")
+			for s in condArray:
+				condfile.write(s["samplename"] + "\t" + OUTPUTDIR + "/Samples/" + s["filename"] + "/kallisto/abundance.tsv" + "\t" + s["condition"] + "\n")
+
+# rule deseq2_kallisto:
+# 	input:
+# 		script = SCRIPTPATH + "/run_deseq2_kallisto.R",
+# 		tab = OUTPUTDIR + "/deseq2_kallisto/kallisto_conditions.tab",
+# 		count_kallisto = expand(OUTPUTDIR + "/Samples/{sampleName}/kallisto/abundance.tsv", sampleName=sample_all),
+# 		corrAnnotations = SCRIPTPATH + "/corresIDorg.txt"
+# 	output:
+# 		OUTPUTDIR + "/deseq2_kallisto/PCA_plot.png"
+# 	shell:
+# 		"""
+# 		dir=$(dirname {output})
+# 		Rscript --slave \
+# 		{input.script} \
+# 		{input.tab} \
+# 		$dir \
+# 		{BIOMART} \
+# 		{REFNAME} \
+# 		{input.corrAnnotations} \
+# 		{LOGFCTHRESHOLD} \
+# 		{FDRTHRESHOLD}
+# 		"""
+
+

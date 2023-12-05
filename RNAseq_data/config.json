@@ -1,0 +1,78 @@
+{
+    "project-name":"Ewing_kallisto",
+    "outdir":"Results",
+    "reference":
+      {
+            "name":"NCBI_GRCh38",
+            "description":"Homo sapiens NCBI GRCh38",
+            "fasta":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/genomes/hg38/hg38.analysisSet.fa",
+            "gtf":"/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/genomes/hg38/hg38_refseq_with_symbols.gtf",
+            "biomart":"feb2014.archive.ensembl.org,ENSEMBL_MART_ENSEMBL,hsapiens_gene_ensembl"
+      },
+    "replicates":{
+        "A673": {
+            "name":"A673",
+            "samples":["A673_rep1","A673_rep2","A673_rep3"]
+        },
+        "EW3": {
+            "name":"EW3",
+            "samples":["EW3_rep1","EW3_rep2","EW3_rep3"]
+        },
+        "EW24": {
+            "name":"EW24",
+            "samples":["EW24_rep1","EW24_rep2","EW24_rep3"]
+        },
+        "MHHES1": {
+            "name":"MHHES1",
+            "samples":["MHHES1_rep1","MHHES1_rep2","MHHES1_rep3"]
+        },
+        "RDES": {
+            "name":"RDES",
+            "samples":["RDES_rep1","RDES_rep2","RDES_rep3"]
+        },
+        "SKES1": {
+            "name":"SKES1",
+            "samples":["SKES1_rep1","SKES1_rep2","SKES1_rep3"]
+        },
+        "TC71": {
+            "name":"TC71",
+            "samples":["TC71_rep1","TC71_rep2","TC71_rep3"]
+        },
+        "ASP14_day0": {
+            "name":"ASP14_day0",
+            "samples":["ASP14_day0_rep1","ASP14_day0_rep2","ASP14_day0_rep3"]
+        },
+        "ASP14_day7": {
+            "name":"ASP14_day7",
+            "samples":["ASP14_day7_rep1","ASP14_day7_rep2","ASP14_day7_rep3"]
+        },
+        "CHLA10": {
+            "name":"CHLA10",
+            "samples":["CHLA10"]
+        },
+        "EW1": {
+            "name":"EW1",
+            "samples":["EW1"]
+        },
+        "EW7": {
+            "name":"EW7",
+            "samples":["EW7"]
+        },
+        "EW22": {
+            "name":"EW22",
+            "samples":["EW22"]
+        },
+        "MIC": {
+            "name":"MIC",
+            "samples":["MIC"]
+        },
+        "POE": {
+            "name":"POE",
+            "samples":["POE"]
+        },
+        "SKNMC": {
+            "name":"SKNMC",
+            "samples":["SKNMC"]
+        }
+    }
+}
