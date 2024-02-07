@@ -1,0 +1,88 @@
+############### Command to launch ###############
+
+# snakemake --config projectFile="project_MSC.json" -rp -j40 --use-conda --conda-frontend conda -s snakefile_MSC
+
+############## Importations ##############
+
+import os
+import sys
+import errno
+import json
+
+############# Functions #################
+
+def getBWFile(wildcards):
+    for s in config["samples"]:
+        if (s["sample"]==wildcards.sampleName):
+            return s["files"]["file"]
+
+def get_control(wildcards):
+    for s in config["samples"]:
+        if (s["sample"]==wildcards.sampleName):
+            return OUTPUTDIR + "/Samples/" + s["control"] + "/bedgraphs/" + s["control"] + "_hg38.bedGraph"
+
+configfile: config["projectFile"]
+
+PROJECTNAME = config["projectName"]
+REFERENCE = "/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/genomes/hg38/hg38.analysisSet.fa"
+ANNOTATION = "/LAB-DATA/BiRD/shares/Phy_OS/bone_epigenetics/anais/genomes/hg38/hg38_refseq_with_symbols_and_transcripts.gtf"
+OUTPUTDIR = "/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/projects/CHIPseq_ewing/MSC_outs"
+SCRIPTPATH = "/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/scripts"
+ANNOVARPATH = "/LAB-DATA/BiRD/users/postec-a-1/annovar"
+BWA_INDEX = "/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/genomes/genome_index/BWA/BWA_index_hg38/hg38.analysisSet.fa"
+
+
+sample_all = list()
+for s in config["samples"]:
+	sample_all.append(s["sample"])
+
+################# Rules #################
+
+rule all:
+    input:
+        expand(OUTPUTDIR + "/Samples/{sampleName}/bedgraphs/{sampleName}_hg38.bedGraph", sampleName=sample_all)
+
+rule convert_to_bedGraph:
+    input:
+        bw = getBWFile
+    output:
+        temp(OUTPUTDIR + "/Samples/{sampleName}/bedgraphs/{sampleName}_hg19.bedGraph")
+    shell:
+        """
+        export PATH=$PATH:/LAB-DATA/BiRD/users/postec-a-1/UCSC_tools
+        bigWigToBedGraph {input.bw} {output}
+        """
+
+rule change_chr_names:
+    input:
+        bd = OUTPUTDIR + "/Samples/{sampleName}/bedgraphs/{sampleName}_hg19.bedGraph"
+        
+    output:
+        temp(OUTPUTDIR + "/Samples/{sampleName}/bedgraphs/{sampleName}_hg19_chr.bedGraph")
+    shell:
+        """
+        awk 'BEGIN {{FS="\t";OFS="\t"}} ($1 ~ /^[[:digit:]]+$|^X$|^Y$/) {{print "chr"$0}} ($1 ~ /^MT$/) {{print "chrM",$2,$3,$4}}' {input.bd} > {output}
+        """
+
+rule liftOver:
+    input:
+        bd = OUTPUTDIR + "/Samples/{sampleName}/bedgraphs/{sampleName}_hg19_chr.bedGraph",
+        chain = "/LAB-DATA/BiRD/shares/Phy-OS/bone_epigenetics/anais/genomes/hg19/hg19ToHg38.over.chain.gz"
+    output:
+        temp(OUTPUTDIR + "/Samples/{sampleName}/bedgraphs/{sampleName}_hg38_unsorted.bedGraph")
+    shell:
+        """
+        export PATH=$PATH:/LAB-DATA/BiRD/users/postec-a-1/UCSC_tools
+        liftOver {input.bd} {input.chain} {output} unMapped
+        """
+
+rule sort_bedGraph:
+    input:
+        OUTPUTDIR + "/Samples/{sampleName}/bedgraphs/{sampleName}_hg38_unsorted.bedGraph"
+    output:
+        OUTPUTDIR + "/Samples/{sampleName}/bedgraphs/{sampleName}_hg38.bedGraph"
+    shell:
+        """
+        export PATH=$PATH:/LAB-DATA/BiRD/users/postec-a-1/UCSC_tools
+        bedSort {input} {output}
+        """
