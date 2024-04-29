@@ -5,7 +5,7 @@ library(tidyverse)
 
 ######### Params ########
 
-palette <- c("#68BD8E","red")
+palette <- c("#0000c0","#dc056b")
 names(palette) <- c("FALSE","TRUE")
 
 genes <- c('KCNA2','KCNA1','KCNA3','KCNA4','KCNA5','KCNA6','KCNA7','KCNA10')
@@ -31,7 +31,7 @@ for (gene in genes){
 
     data_exp$is_ewing <- as.character(data_exp$OncotreePrimaryDisease == "Ewing Sarcoma")
 
-    png(paste(c("CCLE_boxplot_",gene,"_v2.png"),collapse=""),height=21,width=15,units="cm",res=300)
+    pdf(paste(c("CCLE_boxplot_",gene,"_v2.pdf"),collapse=""),height=8.25,width=5.9)
     print(ggplot(data_exp, aes(x=expression, y=reorder(OncotreePrimaryDisease,expression,decreasing=F), fill=is_ewing)) +
         geom_boxplot() + 
         scale_fill_manual(values=palette) +
@@ -60,7 +60,7 @@ colnames(data_exp)[2] <- "expression"
 
 data_exp$is_ewing <- as.character(data_exp$OncotreePrimaryDisease == "Ewing Sarcoma")
 
-png(paste(c("CCLE_boxplot_",gene,"_v2.png"),collapse=""),height=15,width=21,units="cm",res=300)
+pdf(paste(c("CCLE_boxplot_",gene,"_v2.pdf"),collapse=""),width=8.25,height=5.9)
     ggplot(data_exp, aes(x=reorder(OncotreePrimaryDisease,expression,decreasing=T), y=expression, fill=is_ewing)) +
     geom_boxplot() + 
     scale_fill_manual(values=palette) +

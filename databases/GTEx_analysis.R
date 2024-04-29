@@ -5,8 +5,9 @@ library(tidyverse)
 
 ######### Params ########
 
-palette <- c("#68BD8E","red")
+palette <- c("#0000c0","#dc056b")
 names(palette) <- c("FALSE","TRUE")
+
 
 # genes <- c('KCNA2','KCNA1','KCNA3','KCNA4','KCNA5','KCNA6','KCNA7','KCNA10')
 # KCNA6 is not available
@@ -39,7 +40,7 @@ for (gene in genes){
     data_exp <- rbind(exp[,c(1,3,4)],data_exp_CCLE[which(data_exp_CCLE$SMTSD == "Ewing Sarcoma"),])
     data_exp$is_ewing <- as.character(data_exp$SMTSD == "Ewing Sarcoma")
 
-    png(paste(c("GTEx_boxplot_",gene,"_with_ewing.png"),collapse=""),height=21,width=13,units="cm",res=300)
+    pdf(paste(c("GTEx_boxplot_",gene,"_with_ewing.pdf"),collapse=""),height=8.25,width=5.12)
     print(ggplot(data_exp, aes(x=log2TPM, y=reorder(SMTSD,log2TPM,decreasing=F), fill=is_ewing)) +
         geom_boxplot() +
         scale_fill_manual(values=palette) +

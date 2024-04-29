@@ -68,8 +68,8 @@ data_pca = as.data.frame(pca$x)
 data_pca$samplename = rownames(data_pca)
 data_pca = merge(data_pca,sampleTable[,c(1,3)])
 
-outPlot = c(paste(OUTDIR,"/PCAplot_without_names.png",sep=""))
-png(outPlot,,width=20,height=15,units="cm",res=300)
+outPlot = c(paste(OUTDIR,"/PCAplot_without_names.pdf",sep=""))
+pdf(outPlot,width=7.87,height=5.9)
 ggplot(data_pca, aes(x=PC1,y=PC2, label=samplename, color=condition)) +
 	geom_point(size=5) +
 	theme_light() +
@@ -81,8 +81,6 @@ dev.off()
 ########## Boxplot genes ########
 
 fpkm_exp <- fpkm(dds)
-palette_ASP14 <- c("#ece0c2","#090093")
-names(palette_ASP14) <- c('ASP14_day0','ASP14_day7')
 
 gene_selected <- "KCNA2"
 #transcripts_selected <- correspondance_symbol[which(correspondance_symbol$symbol==gene_selected),1]
@@ -101,8 +99,8 @@ data_boxplot <- merge(data_boxplot,transcripts_nicknames)
 
 cells <- c('A673','ASP14_day0','ASP14_day7','EW24','EW3','MHHES1','RDES','SKES1','TC71')
 for (cell in cells){
-  outPlot = c(paste(c(OUTDIR,"/KCNA2_expression_",cell,".png"),collapse=""))
-  png(outPlot, width=14, height=12, units="cm", res=300)
+  outPlot = c(paste(c(OUTDIR,"/KCNA2_expression_",cell,".pdf"),collapse=""))
+  pdf(outPlot, width=5.5, height=4.7)
   print(ggplot(subset(data_boxplot,condition==cell), aes(x = nickname, y = expression, fill=transcript)) +
     geom_boxplot(alpha=0.5) +
     theme_minimal() +
@@ -114,10 +112,10 @@ for (cell in cells){
   dev.off()
 }
 
-palette_ASP14 <- c("#ece0c2","#090093")
+palette_ASP14 <- c("#ece0c2","#68bd8e")
 names(palette_ASP14) <- c('ASP14_day0','ASP14_day7')
-outPlot = c(paste(c(OUTDIR,"/KCNA2_expression_ASP14.png"),collapse=""))
-png(outPlot, width=18, height=12, units="cm", res=300)
+outPlot = c(paste(c(OUTDIR,"/KCNA2_expression_ASP14.pdf"),collapse=""))
+pdf(outPlot, width=7.1, height=4.7)
 print(ggplot(subset(data_boxplot,condition %in% c('ASP14_day0','ASP14_day7')), aes(x = nickname, y = expression, fill=condition)) +
   geom_boxplot(alpha=0.65) +
   labs(fill="Condition") +
@@ -177,7 +175,7 @@ DE$DE_label[which(DE$gene %in% list_genes)] <- DE$transcript[which(DE$gene %in% 
 DE_palette = c("firebrick3", "gray60", "palegreen3")
 names(DE_palette) = c("DOWN","NONE","UP")
 
-png(paste(c(OUTDIR,"/",comp,"_Volcano_with_names.png"),collapse=""),width=25,height=25,units="cm",res=300)
+pdf(paste(c(OUTDIR,"/",comp,"_Volcano_with_names.pdf"),collapse=""),width=5.9,height=5.9)
   ggplot(data=DE, aes(x=log2FoldChange, y=-log10(padj), color=DE, label=DE_label)) + 
   geom_point() +
   theme_minimal() +

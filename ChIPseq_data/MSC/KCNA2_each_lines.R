@@ -76,29 +76,41 @@ plot_annot <- ggplot(gtf_KCNA2,aes(xmin=start_transcript, xmax=end_transcript, y
 #GGAA_coords <- data.frame('start'=c(110611020),'end'=c(110611071))
 GGAA_coords <- data.frame('start'=c(110610970),'end'=c(110611121))
 
+# plasmid control
+MSC_control_FLI1_data <- make_df_cov("./Samples/MSC1_control_FLI1/bedgraphs/MSC1_control_FLI1_hg38.bedGraph","chr1",110583000,110641000)
+MSC_control_H3K27ac_data <- make_df_cov("./Samples/MSC1_control_H3K27ac/bedgraphs/MSC1_control_H3K27ac_hg38.bedGraph","chr1",110583000,110641000)
+
+# plasmid EWSFLI1
+MSC_EWSFLI1_FLI1_data <- make_df_cov("./Samples/MSC1_EWSFLI1_FLI1/bedgraphs/MSC1_EWSFLI1_FLI1_hg38.bedGraph","chr1",110583000,110641000)
+MSC_EWSFLI1_H3K27ac_data <- make_df_cov("./Samples/MSC1_EWSFLI1_H3K27ac/bedgraphs/MSC1_EWSFLI1_H3K27ac_hg38.bedGraph","chr1",110583000,110641000)
+
+# plasmid FLI1
+MSC_FLI1_FLI1_data <- make_df_cov("./Samples/MSC1_FLI1_FLI1/bedgraphs/MSC1_FLI1_FLI1_hg38.bedGraph","chr1",110583000,110641000)
+MSC_FLI1_H3K27ac_data <- make_df_cov("./Samples/MSC1_FLI1_H3K27ac/bedgraphs/MSC1_FLI1_H3K27ac_hg38.bedGraph","chr1",110583000,110641000)
+
 # All plasmids 
 max_cov_plot <- max(c(MSC_control_FLI1_data$reads_all,MSC_control_H3K27ac_data$reads_all,MSC_EWSFLI1_FLI1_data$reads_all,MSC_EWSFLI1_H3K27ac_data$reads_all,MSC_EWSFLI1_FLI1_data$reads_all,MSC_EWSFLI1_H3K27ac_data$reads_all),na.rm=T)
 
 MSC_control_FLI1 <- make_cov_plot(MSC_control_FLI1_data,110583000,110641000,"#85d1e4",max_cov_plot) + 
   ylab(bquote(atop(bold("Plasmid control"),"FLI1"))) +
-  geom_rect(data=GGAA_coords, aes(xmin=start,xmax=end,ymin=0,ymax=max_cov_plot),inherit.aes=F, fill="red", alpha=1)
+  geom_rect(data=GGAA_coords, aes(xmin=start,xmax=end,ymin=0,ymax=max_cov_plot),inherit.aes=F, fill="#dc056b", alpha=1)
 MSC_control_H3K27ac <- make_cov_plot(MSC_control_H3K27ac_data,110583000,110641000,"#85d1e4",max_cov_plot) + 
   ylab(bquote(atop(bold("Plasmid control"),"H3K27ac"))) +
-  geom_rect(data=GGAA_coords, aes(xmin=start,xmax=end,ymin=0,ymax=max_cov_plot),inherit.aes=F, fill="red", alpha=1)
+  geom_rect(data=GGAA_coords, aes(xmin=start,xmax=end,ymin=0,ymax=max_cov_plot),inherit.aes=F, fill="#dc056b", alpha=1)
 MSC_EWSFLI1_FLI1 <- make_cov_plot(MSC_EWSFLI1_FLI1_data,110583000,110641000,"#ec93a6",max_cov_plot) + 
   ylab(bquote(atop(bold("Plasmid EWSFLI1"),"FLI1"))) +
-  geom_rect(data=GGAA_coords, aes(xmin=start,xmax=end,ymin=0,ymax=max_cov_plot),inherit.aes=F, fill="red", alpha=1)
+  geom_rect(data=GGAA_coords, aes(xmin=start,xmax=end,ymin=0,ymax=max_cov_plot),inherit.aes=F, fill="#dc056b", alpha=1)
 MSC_EWSFLI1_H3K27ac <- make_cov_plot(MSC_EWSFLI1_H3K27ac_data,110583000,110641000,"#ec93a6",max_cov_plot) + 
   ylab(bquote(atop(bold("Plasmid EWSFLI1"),"H3K27ac"))) +
-  geom_rect(data=GGAA_coords, aes(xmin=start,xmax=end,ymin=0,ymax=max_cov_plot),inherit.aes=F, fill="red", alpha=1)
+  geom_rect(data=GGAA_coords, aes(xmin=start,xmax=end,ymin=0,ymax=max_cov_plot),inherit.aes=F, fill="#dc056b", alpha=1)
 MSC_FLI1_FLI1 <- make_cov_plot(MSC_FLI1_FLI1_data,110583000,110641000,"#f49b70",max_cov_plot) + 
   ylab(bquote(atop(bold("Plasmid FLI1"),"FLI1"))) +
-  geom_rect(data=GGAA_coords, aes(xmin=start,xmax=end,ymin=0,ymax=max_cov_plot),inherit.aes=F, fill="red", alpha=1)
+  geom_rect(data=GGAA_coords, aes(xmin=start,xmax=end,ymin=0,ymax=max_cov_plot),inherit.aes=F, fill="#dc056b", alpha=1)
 MSC_FLI1_H3K27ac <- make_cov_plot(MSC_FLI1_H3K27ac_data,110583000,110641000,"#f49b70",max_cov_plot) + 
   ylab(bquote(atop(bold("Plasmid FLI1"),"H3K27ac"))) +
-  geom_rect(data=GGAA_coords, aes(xmin=start,xmax=end,ymin=0,ymax=max_cov_plot),inherit.aes=F, fill="red", alpha=1)
+  geom_rect(data=GGAA_coords, aes(xmin=start,xmax=end,ymin=0,ymax=max_cov_plot),inherit.aes=F, fill="#dc056b", alpha=1)
 
-png("./plots/KCNA2_MSC1.png", width = 20, height = 25, units = "cm", res = 300)
+pdf("./plots/KCNA2_MSC1.pdf", width = 7.87, height = 9.84)
 plot_grid(ggplot() + annotate("text", x = 1, y = 1, size=5, label="MSC with plasmids, ChIPseq H3K27ac and FLI1") + theme_void(),
             ggplot() + xlim(110583000,110641000) + annotate("text",x=max(GGAA_coords$start), y = 1, size=3, label="(GGAA)[n]",parse=TRUE) + theme_void(),
             MSC_control_FLI1 ,MSC_control_H3K27ac,
