@@ -122,12 +122,16 @@ GGAA_coords <- data.frame('start'=c(110610970),'end'=c(110611121))
 for (cell in cells){
     ## Data reading
     H3K4me3_cov <- read.table(paste(c("./Samples/",cell,"/",cell,"_H3K4me3_KCNA2_coverage.tsv"),collapse=""), h=T, sep="\t")
+    H3K4me3_cov <- H3K4me3_cov[which(H3K4me3_cov$position>=110583000 & H3K4me3_cov$position<=110641000),]
     H3K4me3_macs2 <- subset(read.table(paste(c("./Samples/",cell,"/macs2/",cell,"_H3K4me3_peaks.narrowPeak"),collapse=""), h=F, sep="\t"),V1=="chr1")
     H3K27ac_cov <- read.table(paste(c("./Samples/",cell,"/",cell,"_H3K27ac_KCNA2_coverage.tsv"),collapse=""), h=T, sep="\t")
+    H3K27ac_cov <- H3K27ac_cov[which(H3K27ac_cov$position>=110583000 & H3K27ac_cov$position<=110641000),]
     H3K27ac_macs2 <- subset(read.table(paste(c("./Samples/",cell,"/macs2/",cell,"_H3K27ac_peaks.narrowPeak"),collapse=""), h=F, sep="\t"),V1=="chr1")
     H3K27me3_cov <- read.table(paste(c("./Samples/",cell,"/",cell,"_H3K27me3_KCNA2_coverage.tsv"),collapse=""), h=T, sep="\t")
+    H3K27me3_cov <- H3K27me3_cov[which(H3K27me3_cov$position>=110583000 & H3K27me3_cov$position<=110641000),]
     H3K27me3_macs2 <- subset(read.table(paste(c("./Samples/",cell,"/macs2/",cell,"_H3K27me3_peaks.narrowPeak"),collapse=""), h=F, sep="\t"),V1=="chr1")
     transcription_factor_cov <- read.table(paste(c("./Samples/",cell,"/",cell,"_transcription_factor_KCNA2_coverage.tsv"),collapse=""), h=T, sep="\t")
+    transcription_factor_cov <- transcription_factor_cov[which(transcription_factor_cov$position>=110583000 & transcription_factor_cov$position<=110641000),]
     transcription_factor_macs2 <- subset(read.table(paste(c("./Samples/",cell,"/macs2/",cell,"_transcription_factor_peaks.narrowPeak"),collapse=""), h=F, sep="\t"),V1=="chr1")
 
     ## For a plot with all sequencings
